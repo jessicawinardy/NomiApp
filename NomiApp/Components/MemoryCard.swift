@@ -6,49 +6,63 @@
 //
 
 import SwiftUI
+import Foundation
 
 struct MemoryCard: View {
+    let memory: Memory
+    
     var body: some View {
-        HStack(alignment: .top, spacing: 12) {
-            Image(.image)
-                .resizable()
-                .scaledToFill()
-                .frame(width: 80, height: 80)
-                .clipShape(RoundedRectangle(cornerRadius: 20))
+        GeometryReader { proxy in
+            HStack(alignment: .center, spacing: 12) {
+                Image(.image)
+                    .resizable()
+                    .scaledToFill()
+                    .frame(width: 80, height: 80)
+                    .clipShape(RoundedRectangle(cornerRadius: 20))
 
-            VStack(alignment: .leading, spacing: 6) {
-
-                HStack(spacing: 2) {
-                    Image(systemName: "mappin")
-                    Text("Gion District, Kyoto")
-                }
-                .font(.system(size: 12, weight: .semibold))
-                .foregroundColor(Color.orange)
-
-                Text(
-                    "Walked through hidden streets and discovered a quiet cafe filled with cookies."
-                )
-                .font(.system(size: 13, weight: .medium))
-                .lineLimit(3)
-
-                HStack(spacing: 8) {
-                    Text("June 8, 2026")
-
-                    Text("·")
-
+                VStack(alignment: .leading, spacing: 6) {
                     HStack(spacing: 2) {
-                        Image(systemName: "leaf.fill")
-                        Text("Peaceful")
+                        Image(systemName: "mappin")
+                        Text(memory.location)
                     }
+                    .font(.system(size: 12, weight: .semibold))
+                    .foregroundColor(Color.orange)
+
+                    Text(memory.title)
+                        .font(.system(size: 13, weight: .medium))
+                        .lineLimit(3)
+
+                    HStack(spacing: 8) {
+                        Text(memory.date.formatted(date: .long, time: .omitted))
+
+                        Text("·")
+
+                        HStack(spacing: 2) {
+                            Image(systemName: memory.mood.icon)
+                            Text(memory.mood.title)
+                        }
+                    }
+                    .font(.system(size: 12))
+                    .foregroundStyle(.secondary)
                 }
-                .font(.system(size: 12))
-                .foregroundStyle(.secondary)
+                Image(systemName: "chevron.right")
+                    .font(.system(size: 10, weight: .medium))
+                    .foregroundColor(.greyAccent)
+                    .opacity(0.5)
             }
+            .frame(maxWidth: proxy.size.width, alignment: .leading)
         }
-        .padding()
+        .frame(height: 80)
     }
 }
 
 #Preview {
-    MemoryCard()
+    MemoryCard(
+        memory: Memory(
+            location: "Gion District, Kyoto",
+            title: "Walked through hidden streets and discovered a quiet cafe filled with cookies.",
+            date: Calendar.current.date(from: DateComponents(year: 2028, month: 6, day: 8, hour: 10, minute: 15)) ?? .now,
+            mood: .adventurous
+        )
+    )
 }
