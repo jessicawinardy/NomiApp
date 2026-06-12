@@ -41,7 +41,7 @@ struct TodayCard: View {
                         .foregroundColor(.white)
                         .opacity(0.55)
                         Text(memory.title)
-                            .font(.system(size: 17, weight: .semibold))
+                            .font(.custom("PlayfairDisplay-Bold", size: 17))
                             .foregroundColor(.white)
                         HStack(spacing: 20) {
                             HStack(spacing: 4) {
@@ -72,11 +72,6 @@ struct TodayCard: View {
 }
 
 #Preview {
-    TodayCard(memory: Memory(
-        location: "Ubud, Bali",
-        title: "Morning walk through the rice terraces. Them mist was still lown on the fields.",
-        date: Calendar.current.date(from: DateComponents(year: 2028, month: 6, day: 8, hour: 7, minute: 30)) ?? .now,
-        mood: .peaceful
-        )
+    TodayCard(memory: memories[1]
     )
 }

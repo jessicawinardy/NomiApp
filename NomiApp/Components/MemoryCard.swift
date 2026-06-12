@@ -58,11 +58,6 @@ struct MemoryCard: View {
 
 #Preview {
     MemoryCard(
-        memory: Memory(
-            location: "Gion District, Kyoto",
-            title: "Walked through hidden streets and discovered a quiet cafe filled with cookies.",
-            date: Calendar.current.date(from: DateComponents(year: 2028, month: 6, day: 8, hour: 10, minute: 15)) ?? .now,
-            mood: .adventurous
-        )
+        memory: memories[1]
     )
 }
