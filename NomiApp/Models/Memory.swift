@@ -12,4 +12,5 @@ struct Memory {
     let title: String
     let date: Date
     let mood: Mood
+    let liked: Bool
 }
