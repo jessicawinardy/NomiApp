@@ -17,27 +17,40 @@ struct TodayCard: View {
             GeometryReader { proxy in
                 VStack(alignment: .leading) {
                     ZStack(alignment: .bottomLeading) {
-                        Image(.image)
-                            .resizable()
-                            .scaledToFill()
+                        if let imageData = memory.imageData,
+                           let uiImage = UIImage(data: imageData) {
+                            Image(uiImage: uiImage)
+                                .resizable()
+                                .scaledToFill()
+                                .frame(width: proxy.size.width, height: 290)
+                                .clipped()
+                                .overlay {
+                                    LinearGradient(
+                                        colors: [
+                                            .clear,
+                                            .black.opacity(0.2),
+                                            .black.opacity(0.7)
+                                        ],
+                                        startPoint: .top,
+                                        endPoint: .bottom
+                                    )
+                                }
+                        } else {
+                            LinearGradient(
+                                colors: [
+                                    Color.black.opacity(0.55),
+                                    Color.black.opacity(0.75)
+                                ],
+                                startPoint: .top,
+                                endPoint: .bottom
+                            )
                             .frame(width: proxy.size.width, height: 290)
-                            .clipped()
-                            .overlay {
-                                LinearGradient(
-                                    colors: [
-                                        .clear,
-                                        .black.opacity(0.1),
-                                        .black.opacity(0.6)
-                                    ],
-                                    startPoint: .top,
-                                    endPoint: .bottom
-                                )
-                            }
+                        }
                        
                         VStack(alignment: .leading, spacing: 5) {
                             HStack(spacing: 2) {
                                 Image(systemName: "mappin")
-                                Text(memory.location)
+                                Text(memory.displayLocation)
                             }
                             .font(Font.system(size: 11, weight: .medium))
                             .foregroundColor(.white)
@@ -90,7 +103,7 @@ struct TodayCard: View {
             title: "Morning walk through the rice terraces.",
             date: .now,
             mood: .peaceful,
-            liked: true
+            liked: true,
         )
     )
         .modelContainer(SampleData.previewContainer)

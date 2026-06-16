@@ -123,20 +123,40 @@ struct MemoryDetail: View {
                 .frame(height: 440)
                 .frame(maxWidth: .infinity)
                 .background {
-                    Image(.image)
-                        .resizable()
-                        .scaledToFill()
-                        .overlay {
-                            LinearGradient(
-                                colors: [
-                                    .black.opacity(0.3),
-                                    .clear,
-                                    .black.opacity(0.4)
-                                ],
-                                startPoint: .top,
-                                endPoint: .bottom
-                            )
-                        }
+                    if let data = memory.imageData, let uiImage = UIImage(
+                        data: data){
+                        Image(uiImage: uiImage)
+                            .resizable()
+                            .scaledToFill()
+                            .overlay {
+                                LinearGradient(
+                                    colors: [
+                                        .black.opacity(0.3),
+                                        .clear,
+                                        .black.opacity(0.5)
+                                    ],
+                                    startPoint: .top,
+                                    endPoint: .bottom
+                                )
+                            }
+                    }
+                    else{
+                        Image(.image)
+                            .resizable()
+                            .scaledToFill()
+                            .overlay {
+                                LinearGradient(
+                                    colors: [
+                                        .black.opacity(0.3),
+                                        .clear,
+                                        .black.opacity(0.5)
+                                    ],
+                                    startPoint: .top,
+                                    endPoint: .bottom
+                                )
+                            }
+                    }
+                    
                 }
                 .clipShape(Rectangle())
                 

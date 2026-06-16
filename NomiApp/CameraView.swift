@@ -13,6 +13,8 @@ struct CameraView: View {
     @State private var flashIcon = "bolt.slash.fill"
     @State private var capturedImage: IdentifiableImage?
     
+    let isCameraTabActive: Bool
+    
     var body: some View {
         GeometryReader{ geometry in
             VStack(spacing: 0){
@@ -22,9 +24,18 @@ struct CameraView: View {
                 .frame(height: 40)
                 .padding(.top, 10)
                 
-                CameraPreviewView(cameraEngine: cameraEngine)
-                    .aspectRatio(3/4, contentMode: .fit)
-                    .clipShape(RoundedRectangle(cornerRadius: 30))
+                VStack{
+                    CameraPreviewView(cameraEngine: cameraEngine)
+                        .aspectRatio(3/4, contentMode: .fit)
+                        .clipShape(RoundedRectangle(cornerRadius: 30))
+                }.onAppear{
+                    if isCameraTabActive{
+                        cameraEngine.startSession()
+                    }
+                }
+                .onDisappear{
+                    cameraEngine.stopSession()
+                }
                 
                 Spacer()
                 
@@ -61,6 +72,14 @@ struct CameraView: View {
                 Spacer()
             }
         }
+        .onChange(of: isCameraTabActive){ _, isActive in
+            if isActive{
+                cameraEngine.startSession()
+            }
+            else{
+                cameraEngine.stopSession()
+            }
+        }
         .onReceive(cameraEngine.$image) { image in
             guard let image else { return }
             capturedImage = IdentifiableImage(image: image)
@@ -80,5 +99,5 @@ private struct IdentifiableImage: Identifiable {
 }
 
 #Preview {
-    CameraView()
+    CameraView(isCameraTabActive: true)
 }

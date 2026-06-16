@@ -16,16 +16,27 @@ struct MemoryCard: View {
         NavigationLink(value: memory) {
             GeometryReader { proxy in
                 HStack(alignment: .center, spacing: 12) {
-                    Image(.image)
-                        .resizable()
-                        .scaledToFill()
-                        .frame(width: 80, height: 80)
-                        .clipShape(RoundedRectangle(cornerRadius: 20))
+                    if let imageData = memory.imageData,
+                       let uiImage = UIImage(data: imageData) {
+                        Image(uiImage: uiImage)
+                            .resizable()
+                            .scaledToFill()
+                            .frame(width: 80, height: 80)
+                            .clipShape(RoundedRectangle(cornerRadius: 20))
+
+                    }
+                    else{
+                        Image(systemName: "photo.fill")
+                            .resizable()
+                            .scaledToFill()
+                            .frame(width: 80, height: 80)
+                            .clipShape(RoundedRectangle(cornerRadius: 20))
+                    }
 
                     VStack(alignment: .leading, spacing: 6) {
                         HStack(spacing: 2) {
                             Image(systemName: "mappin")
-                            Text(memory.location)
+                            Text(memory.displayLocation)
                         }
                         .font(.system(size: 12, weight: .semibold))
                         .foregroundColor(Color.orange)
@@ -47,6 +58,7 @@ struct MemoryCard: View {
                         .font(.system(size: 12))
                         .foregroundStyle(.secondary)
                     }
+                    Spacer()
                     Image(systemName: "chevron.right")
                         .font(.system(size: 10, weight: .medium))
                         .foregroundColor(.greyAccent)
@@ -67,7 +79,8 @@ struct MemoryCard: View {
             title: "Morning walk through the rice terraces.",
             date: .now,
             mood: .peaceful,
-            liked: true
+            liked: true,
+            imageData: nil
         )
     )
         .modelContainer(SampleData.previewContainer)

@@ -70,9 +70,6 @@ class CameraEngine: NSObject, ObservableObject {
         
         session.commitConfiguration()
         
-        DispatchQueue.global(qos: .userInitiated).async {
-            self.session.startRunning()
-        }
     }
     
     func captureImage() {
@@ -128,6 +125,20 @@ class CameraEngine: NSObject, ObservableObject {
         @unknown default:
             flashMode = .off
             return "bolt.slash.fill"
+        }
+    }
+    
+    func startSession() {
+        guard !session.isRunning else {return}
+        sessionQueue.async{
+            self.session.startRunning()
+        }
+    }
+    
+    func stopSession(){
+        guard session.isRunning else {return}
+        sessionQueue.async{
+            self.session.stopRunning()
         }
     }
 }

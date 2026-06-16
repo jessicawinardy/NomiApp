@@ -10,7 +10,10 @@ import SwiftData
 //import SwiftData
 
 struct ContentView: View {
-//    @State private var selectedTab: TabItem = .journal
+    @Environment(\.modelContext) private var modelContext
+    @Query private var existingPlaces: [Place]
+    @State private var selectedTab: Int = 0
+    
     var body: some View {
         ZStack {
 //            Group {
@@ -22,24 +25,29 @@ struct ContentView: View {
 //                }
 //            }
             ZStack{
-                TabView {
+                TabView (selection: $selectedTab) {
                     JournalView()
                         .tabItem {
                             Label("Journal", systemImage: "book")
                         }
-                    CameraView()
+                        .tag(0)
+                    CameraView(isCameraTabActive: selectedTab == 1)
                         .tabItem {
                             Label("Camera", systemImage: "camera")
                         }
+                        .tag(1)
                     PlacesView()
                         .tabItem {
                             Label("Places", systemImage: "mappin.and.ellipse")
                         }
+                        .tag(2)
                 }
             }
-//            .fullScreenCover(item: $cameraEngine.image.map){
-//            
-//            }
+        }
+        .onAppear{
+            if existingPlaces.isEmpty{
+                SampleData.insertSampleData(into: modelContext)
+            }
         }
     }
 }

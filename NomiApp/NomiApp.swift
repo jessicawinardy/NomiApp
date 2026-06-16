@@ -10,10 +10,30 @@ import SwiftData
 
 @main
 struct NomiAppApp: App {
+    var sharedModelContainer: ModelContainer = {
+        let schema = Schema([
+            Place.self,
+            Memory.self
+        ])
+        let modelConfiguration = ModelConfiguration(
+            schema: schema,
+            isStoredInMemoryOnly: false
+        )
+        
+        do{
+            return try ModelContainer(
+                for: schema,
+                configurations: [modelConfiguration]
+            )
+        } catch{
+            fatalError("Error initializing storage")
+        }
+    }()
     var body: some Scene {
+        
         WindowGroup {
             ContentView()
         }
-        .modelContainer(SampleData.previewContainer)
+        .modelContainer(sharedModelContainer)
     }
 }

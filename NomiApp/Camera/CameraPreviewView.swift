@@ -48,5 +48,5 @@ struct CameraPreviewView: UIViewRepresentable {
 }
 
 #Preview {
-    CameraView()
+    CameraView(isCameraTabActive: true)
 }

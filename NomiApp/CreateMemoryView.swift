@@ -8,16 +8,16 @@ struct CreateMemoryView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
     
-    @Query(sort: \Place.name, order: .forward) private var availablePlaces: [Place]
-    
-    @State private var selectedPlace: Place?
+    @State private var cityName: String = ""
+    @State private var countryName: String = ""
     @State private var locationDetails: String = ""
+    
     @State private var quickThoughtText: String = ""
     @State private var selectedMood: Mood = .peaceful
     
-    @State private var showAddNewPlaceSheet = false
-    @State private var newPlaceName = ""
-    @State private var newCountryName = ""
+    @State private var showMapSheet = false
+    @State private var showSaveErrorAlert = false
+    @State private var errorMessage = ""
     
     let moods: [(Mood, String)] = [
         (.amazing, Mood.amazing.icon),
@@ -25,7 +25,7 @@ struct CreateMemoryView: View {
         (.excited, Mood.excited.icon),
         (.emotional, Mood.emotional.icon),
         (.tired, Mood.tired.icon),
-        (.adventurous,Mood.adventurous.icon)
+        (.adventurous, Mood.adventurous.icon)
     ]
     
     var body: some View {
@@ -57,61 +57,59 @@ struct CreateMemoryView: View {
                             
                             Spacer()
                             
-                            Button(action: { showAddNewPlaceSheet = true }) {
+                            Button(action: { showMapSheet = true }) {
                                 HStack(spacing: 4) {
-                                    Image(systemName: "plus.circle.fill")
-                                    Text("Add New Place")
+                                    Image(systemName: "map.fill")
+                                    Text("Pick from Map")
                                 }
-                                .font(.system(size: 12, weight: .semibold))
+                                .font(.system(size: 12, weight: .bold))
                                 .foregroundColor(.blueAccent)
                             }
+                        }
+                        
+                        HStack(spacing: 12) {
+                            HStack {
+                                Image(systemName: "building.2")
+                                    .foregroundColor(.orangeAccent)
+                                TextField("City", text: $cityName)
+                                    .font(.system(size: 15))
+                            }
+                            .padding(.vertical, 12)
+                            .padding(.horizontal, 12)
+                            .background(Color.lightOrange.opacity(0.5))
+                            .clipShape(RoundedRectangle(cornerRadius: 16))
+                            
+                            HStack {
+                                Image(systemName: "globe")
+                                    .foregroundColor(.orangeAccent)
+                                TextField("Country", text: $countryName)
+                                    .font(.system(size: 15))
+                            }
+                            .padding(.vertical, 12)
+                            .padding(.horizontal, 12)
+                            .background(Color.lightOrange.opacity(0.5))
+                            .clipShape(RoundedRectangle(cornerRadius: 16))
                         }
                         
                         HStack {
                             Image(systemName: "mappin")
                                 .foregroundColor(.orangeAccent)
-                            
-                            Menu {
-                                Picker("Select Place", selection: $selectedPlace) {
-                                    Text("Select a city...").tag(Place?.none)
-                                    ForEach(availablePlaces) { place in
-                                        Text("\(place.name), \(place.country)").tag(Place?.some(place))
-                                    }
-                                }
-                                .pickerStyle(.inline)
-                            } label: {
-                                
-                                HStack {
-                                    if let place = selectedPlace {
-                                        Text("\(place.name), \(place.country)")
-                                            .foregroundColor(.primary)
-                                    } else {
-                                        Text("Select a city...")
-                                            .foregroundColor(.secondary)
-                                    }
-                                }
-                                .font(.system(size: 16, weight: .regular))
-                            }
-                            
-                            Spacer()
+                            TextField("Specific spot (e.g. Tegalalang rice field)", text: $locationDetails)
+                                .font(.system(size: 15))
+                                .autocorrectionDisabled()
                         }
                         .padding(.vertical, 12)
-                        .padding(.horizontal, 12)
-                        .background(Color.lightOrange)
+                        .padding(.horizontal, 16)
+                        .background(Color.lightOrange.opacity(0.5))
                         .clipShape(RoundedRectangle(cornerRadius: 16))
-                        
-                        TextField("Specific spot (e.g. Tegalalang rice field)", text: $locationDetails)
-                            .font(.system(size: 15))
-                            .autocorrectionDisabled()
-                            .padding(.vertical, 12)
-                            .padding(.horizontal, 16)
-                            .background(
-                                Color(.lightOrange)
-                                    .opacity(0.5)
-                            )
-                            .clipShape(RoundedRectangle(cornerRadius: 16))
                     }
-                   
+                    .sheet(isPresented: $showMapSheet) {
+                        DirectMapPicker { kota, negara in
+                            self.cityName = kota
+                            self.countryName = negara
+                        }
+                    }
+                    
                     VStack(alignment: .leading, spacing: 10) {
                         Text("HOW ARE YOU FEELING?")
                             .font(Font.system(size: 11, weight: .bold))
@@ -123,32 +121,23 @@ struct CreateMemoryView: View {
                                 Button(action: { selectedMood = item.0 }) {
                                     VStack(spacing: 6) {
                                         Image(systemName: item.1).font(.system(size: 26))
-                                            .foregroundStyle(
-                                                selectedMood == item.0 ? Color.white : Color.orangeAccent.opacity(
-                                                    0.5
-                                                )
-                                            )
+                                            .foregroundStyle(selectedMood == item.0 ? Color.white : Color.orangeAccent.opacity(0.5))
                                         Text(item.0.title).font(.system(size: 11, weight: .medium))
                                             .foregroundStyle(selectedMood == item.0 ? Color.white : Color.gray)
                                     }
                                     .frame(maxWidth: .infinity, minHeight: 70)
-                                    .background(
-                                        selectedMood == item.0 ? Color.blueAccent : Color.lightOrange
-                                    )
+                                    .background(selectedMood == item.0 ? Color.blueAccent : Color.lightOrange)
                                     .clipShape(RoundedRectangle(cornerRadius: 16))
                                     .overlay(
                                         RoundedRectangle(cornerRadius: 16)
-                                            .stroke(
-                                                selectedMood == item.0 ? Color.blueAccent : Color.clear,
-                                                lineWidth: 1.5
-                                            )
+                                            .stroke(selectedMood == item.0 ? Color.blueAccent : Color.clear, lineWidth: 1.5)
                                     )
                                 }
                                 .buttonStyle(.plain)
                             }
                         }
                     }
-                    
+                  
                     VStack(alignment: .leading, spacing: 8) {
                         Text("QUICK THOUGHT")
                             .font(Font.system(size: 11, weight: .bold))
@@ -177,31 +166,44 @@ struct CreateMemoryView: View {
                 .padding(.bottom, 30)
             }
             .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    Button(action: {
-                        onDismiss()
-                        dismiss()
-                    }) {
-                        Image(systemName: "chevron.left")
-                            .foregroundColor(.primary)
-                            .fontWeight(.semibold)
-                    }
-                }
-                
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button("Save") {
-                        let finalLocation = locationDetails.isEmpty ? (selectedPlace?.name ?? "Unknown") : locationDetails
+                        let cleanCity = cityName.trimmingCharacters(in: .whitespacesAndNewlines)
+                        let cleanCountry = countryName.trimmingCharacters(in: .whitespacesAndNewlines)
+                        let specificSpot = locationDetails.trimmingCharacters(in: .whitespacesAndNewlines)
                         
+                        var resolvedPlace: Place? = nil
+                        
+                        if !cleanCity.isEmpty {
+                            let descriptor = FetchDescriptor<Place>()
+                            
+                            do {
+                                let allPlaces = try modelContext.fetch(descriptor)
+                                resolvedPlace = allPlaces.first(where: { $0.name.lowercased() == cleanCity.lowercased() })
+                            } catch {
+                                print("Gagal membaca database: \(error.localizedDescription)")
+                                errorMessage = error.localizedDescription
+                                showSaveErrorAlert = true
+                                return
+                            }
+                        }
+                    
                         let newMemory = Memory(
-                            location: finalLocation,
+                            location: specificSpot,
                             title: quickThoughtText,
                             date: .now,
                             mood: selectedMood,
-                            liked: false
+                            liked: false,
+                            imageData: image.jpegData(compressionQuality: 0.8)
                         )
                         
-                        if let place = selectedPlace {
-                            newMemory.place = place
+                        if let existingPlace = resolvedPlace {
+                            newMemory.place = existingPlace
+                        } else if !cleanCity.isEmpty {
+                          
+                            let newPlace = Place(name: cleanCity, country: cleanCountry, imageName: "image")
+                            modelContext.insert(newPlace)
+                            newMemory.place = newPlace
                         }
                         
                         modelContext.insert(newMemory)
@@ -211,14 +213,19 @@ struct CreateMemoryView: View {
                     }
                     .font(.system(size: 16, weight: .bold))
                     .foregroundColor(.blueAccent)
-                    .disabled(selectedPlace == nil)
+                    .disabled(cityName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
                 }
+            }
+            .alert("Could Not Save Memory", isPresented: $showSaveErrorAlert) {
+                Button("OK", role: .cancel) { }
+            } message: {
+                Text(errorMessage)
             }
         }
     }
 }
 
 #Preview {
-    CreateMemoryView(image: .image, onDismiss: {})
+    CreateMemoryView(image: UIImage(resource: .image), onDismiss: {})
         .modelContainer(SampleData.previewContainer)
 }
