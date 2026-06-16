@@ -54,5 +54,5 @@ struct PlaceCard: View {
 
 
 #Preview {
-    PlaceCard(place: places[1])
+    PlaceCard(place: Place(name: "Kyoto", country: "Japan", imageName: "image"))
 }

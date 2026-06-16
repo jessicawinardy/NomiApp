@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftData
 //import SwiftData
 
 struct ContentView: View {
@@ -36,10 +37,14 @@ struct ContentView: View {
                         }
                 }
             }
+//            .fullScreenCover(item: $cameraEngine.image.map){
+//            
+//            }
         }
     }
 }
 
 #Preview {
     ContentView()
+        .modelContainer(SampleData.previewContainer)
 }

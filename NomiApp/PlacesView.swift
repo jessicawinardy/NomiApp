@@ -6,8 +6,10 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct PlacesView: View {
+    @Query(sort: \Place.name, order: .forward) private var places: [Place]
     @State private var searchText: String = ""
 
     private var filteredPlaces: [Place] {
@@ -95,4 +97,5 @@ struct PlacesView: View {
 
 #Preview {
     PlacesView()
+        .modelContainer(SampleData.previewContainer)
 }

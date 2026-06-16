@@ -5,6 +5,7 @@
 	<key>UIAppFonts</key>
 	<array>
 		<string>PlayfairDisplay.ttf</string>
+		<string>PlayfairDisplay-BoldItalic.ttf</string>
 		<string>PlayfairDisplay-Italic.ttf</string>
 		<string>PlayfairDisplay-Bold.ttf</string>
 	</array>
