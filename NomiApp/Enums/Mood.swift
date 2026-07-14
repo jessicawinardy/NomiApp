@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-enum Mood: String, Codable {
+enum Mood: String, Codable, CaseIterable {
     case amazing
     case peaceful
     case excited

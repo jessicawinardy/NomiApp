@@ -7,16 +7,16 @@
 	objects = {
 
 /* Begin PBXFileReference section */
-		DD8E78B42FD9323500CCD33B /* NomiApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NomiApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		DD8E78B42FD9323500CCD33B /* Nomi.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Nomi.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		DD8E78EF2FDAACA400CCD33B /* Exceptions for "NomiApp" folder in "NomiApp" target */ = {
+		DD8E78EF2FDAACA400CCD33B /* Exceptions for "NomiApp" folder in "Nomi" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
 			);
-			target = DD8E78B32FD9323500CCD33B /* NomiApp */;
+			target = DD8E78B32FD9323500CCD33B /* Nomi */;
 		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
@@ -24,7 +24,7 @@
 		DD8E78B62FD9323500CCD33B /* NomiApp */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				DD8E78EF2FDAACA400CCD33B /* Exceptions for "NomiApp" folder in "NomiApp" target */,
+				DD8E78EF2FDAACA400CCD33B /* Exceptions for "NomiApp" folder in "Nomi" target */,
 			);
 			path = NomiApp;
 			sourceTree = "<group>";
@@ -53,7 +53,7 @@
 		DD8E78B52FD9323500CCD33B /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				DD8E78B42FD9323500CCD33B /* NomiApp.app */,
+				DD8E78B42FD9323500CCD33B /* Nomi.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -61,9 +61,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		DD8E78B32FD9323500CCD33B /* NomiApp */ = {
+		DD8E78B32FD9323500CCD33B /* Nomi */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = DD8E78C12FD9323600CCD33B /* Build configuration list for PBXNativeTarget "NomiApp" */;
+			buildConfigurationList = DD8E78C12FD9323600CCD33B /* Build configuration list for PBXNativeTarget "Nomi" */;
 			buildPhases = (
 				DD8E78B02FD9323500CCD33B /* Sources */,
 				DD8E78B12FD9323500CCD33B /* Frameworks */,
@@ -76,11 +76,11 @@
 			fileSystemSynchronizedGroups = (
 				DD8E78B62FD9323500CCD33B /* NomiApp */,
 			);
-			name = NomiApp;
+			name = Nomi;
 			packageProductDependencies = (
 			);
 			productName = NomiApp;
-			productReference = DD8E78B42FD9323500CCD33B /* NomiApp.app */;
+			productReference = DD8E78B42FD9323500CCD33B /* Nomi.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -98,7 +98,7 @@
 					};
 				};
 			};
-			buildConfigurationList = DD8E78AF2FD9323500CCD33B /* Build configuration list for PBXProject "NomiApp" */;
+			buildConfigurationList = DD8E78AF2FD9323500CCD33B /* Build configuration list for PBXProject "Nomi" */;
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -112,7 +112,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				DD8E78B32FD9323500CCD33B /* NomiApp */,
+				DD8E78B32FD9323500CCD33B /* Nomi */,
 			);
 		};
 /* End PBXProject section */
@@ -269,6 +269,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = NomiApp/Info.plist;
 				INFOPLIST_KEY_NSCameraUsageDescription = "Nomi needs access to your camera to capture your special moments.";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Nomi needs access to your location to automatically fill the form";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -303,6 +304,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = NomiApp/Info.plist;
 				INFOPLIST_KEY_NSCameraUsageDescription = "Nomi needs access to your camera to capture your special moments.";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Nomi needs access to your location to automatically fill the form";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -328,7 +330,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		DD8E78AF2FD9323500CCD33B /* Build configuration list for PBXProject "NomiApp" */ = {
+		DD8E78AF2FD9323500CCD33B /* Build configuration list for PBXProject "Nomi" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				DD8E78BF2FD9323600CCD33B /* Debug */,
@@ -337,7 +339,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		DD8E78C12FD9323600CCD33B /* Build configuration list for PBXNativeTarget "NomiApp" */ = {
+		DD8E78C12FD9323600CCD33B /* Build configuration list for PBXNativeTarget "Nomi" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				DD8E78C22FD9323600CCD33B /* Debug */,

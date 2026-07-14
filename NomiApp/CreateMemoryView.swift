@@ -1,5 +1,6 @@
 import SwiftUI
 import SwiftData
+import CoreLocation
 
 struct CreateMemoryView: View {
     let image: UIImage
@@ -11,6 +12,7 @@ struct CreateMemoryView: View {
     @State private var cityName: String = ""
     @State private var countryName: String = ""
     @State private var locationDetails: String = ""
+    @State private var lastMapCoordinate: CLLocationCoordinate2D? = nil
     
     @State private var quickThoughtText: String = ""
     @State private var selectedMood: Mood = .peaceful
@@ -76,7 +78,7 @@ struct CreateMemoryView: View {
                             }
                             .padding(.vertical, 12)
                             .padding(.horizontal, 12)
-                            .background(Color.lightOrange.opacity(0.5))
+                            .background(Color.lightOrange)
                             .clipShape(RoundedRectangle(cornerRadius: 16))
                             
                             HStack {
@@ -87,7 +89,7 @@ struct CreateMemoryView: View {
                             }
                             .padding(.vertical, 12)
                             .padding(.horizontal, 12)
-                            .background(Color.lightOrange.opacity(0.5))
+                            .background(Color.lightOrange)
                             .clipShape(RoundedRectangle(cornerRadius: 16))
                         }
                         
@@ -100,13 +102,14 @@ struct CreateMemoryView: View {
                         }
                         .padding(.vertical, 12)
                         .padding(.horizontal, 16)
-                        .background(Color.lightOrange.opacity(0.5))
+                        .background(Color.lightOrange)
                         .clipShape(RoundedRectangle(cornerRadius: 16))
                     }
                     .sheet(isPresented: $showMapSheet) {
-                        DirectMapPicker { kota, negara in
+                        DirectMapPicker(initialCoordinate: lastMapCoordinate) { kota, negara, coordinate in
                             self.cityName = kota
                             self.countryName = negara
+                            self.lastMapCoordinate = coordinate
                         }
                     }
                     
@@ -121,7 +124,7 @@ struct CreateMemoryView: View {
                                 Button(action: { selectedMood = item.0 }) {
                                     VStack(spacing: 6) {
                                         Image(systemName: item.1).font(.system(size: 26))
-                                            .foregroundStyle(selectedMood == item.0 ? Color.white : Color.orangeAccent.opacity(0.5))
+                                            .foregroundStyle(selectedMood == item.0 ? Color.white : Color.orangeAccent.opacity(0.7))
                                         Text(item.0.title).font(.system(size: 11, weight: .medium))
                                             .foregroundStyle(selectedMood == item.0 ? Color.white : Color.gray)
                                     }
@@ -166,6 +169,15 @@ struct CreateMemoryView: View {
                 .padding(.bottom, 30)
             }
             .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button("Cancel") {
+                        onDismiss()
+                        dismiss()
+                    }
+                    .font(.system(size: 16, weight: .medium))
+                    .foregroundColor(.gray)
+                }
+                
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button("Save") {
                         let cleanCity = cityName.trimmingCharacters(in: .whitespacesAndNewlines)
@@ -181,7 +193,7 @@ struct CreateMemoryView: View {
                                 let allPlaces = try modelContext.fetch(descriptor)
                                 resolvedPlace = allPlaces.first(where: { $0.name.lowercased() == cleanCity.lowercased() })
                             } catch {
-                                print("Gagal membaca database: \(error.localizedDescription)")
+                                print("Error reading database: \(error.localizedDescription)")
                                 errorMessage = error.localizedDescription
                                 showSaveErrorAlert = true
                                 return

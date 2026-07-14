@@ -45,18 +45,18 @@ struct CameraView: View {
                     }){
                         Image(systemName: flashIcon)
                             .font(.system(size: 24, weight: .medium))
-                            .foregroundColor(.blueAccent)
+                            .foregroundColor(.blueCamera)
                     }
                     
                     Button(action:{
                         cameraEngine.captureImage()
                     }){
                         Circle()
-                            .stroke(Color.blueAccent, lineWidth: 4)
+                            .stroke(Color.blueCamera, lineWidth: 4)
                             .frame(width:80, height:80)
                             .overlay(
                                 Circle()
-                                    .fill(Color.blueAccent)
+                                    .fill(Color.blueCamera)
                                     .frame(width:65, height:65)
                             )
                     }
@@ -66,7 +66,7 @@ struct CameraView: View {
                     }){
                         Image(systemName: "arrow.triangle.2.circlepath")
                             .font(.system(size: 24, weight: .medium))
-                            .foregroundColor(.blueAccent)
+                            .foregroundColor(.blueCamera)
                     }
                 }
                 Spacer()
@@ -82,13 +82,18 @@ struct CameraView: View {
         }
         .onReceive(cameraEngine.$image) { image in
             guard let image else { return }
+            cameraEngine.stopSession()
             capturedImage = IdentifiableImage(image: image)
         }
         .fullScreenCover(item: $capturedImage) { wrapping in
             CreateMemoryView(image: wrapping.image) {
                 capturedImage = nil
                 cameraEngine.image = nil
+                if isCameraTabActive {
+                    cameraEngine.startSession()
+                }
             }
+            
         }
     }
 }

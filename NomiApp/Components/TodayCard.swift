@@ -13,7 +13,7 @@ struct TodayCard: View {
     let memory: Memory
     
     var body: some View {
-        NavigationLink(value: memory) {
+        NavigationLink(value: ContentView.Route.memory(memory)) {
             GeometryReader { proxy in
                 VStack(alignment: .leading) {
                     ZStack(alignment: .bottomLeading) {
